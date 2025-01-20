@@ -1,0 +1,161 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Site Wage</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+    <style>
+        .login-section {
+  background-color: rgba(255, 255, 255, 0.8);
+  width: 300px;
+  height: 350px;
+  padding: 20px;
+  border: 3px solid transparent; /* Initially transparent border */
+  border-radius: 10px; /* Optional: Add border radius for rounded corners */
+  animation: borderEffect 3s infinite; /* Apply the animation */
+}
+
+/* Define the animation */
+@keyframes borderEffect {
+  0% { border-color: rgb(255, 0, 0); } 
+  33% { border-color: rgb(0, 255, 0); } 
+  66% { border-color: rgb(0, 0, 255); } 
+  100% { border-color: rgb(255, 0, 0); }
+}
+
+/* Style for headings and labels */
+h2,
+label {
+  color: black;
+  font-size: large;
+}
+#error-messages {
+            position: absolute;
+            top: 20%;
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: 1000;
+            text-align: center; 
+            width: 80%;
+            max-width: 500px; 
+        }
+
+        .alert {
+            font-size: 22px;
+            font-weight: 700;
+            padding: 20px; 
+            margin-bottom: 20px; 
+        }
+
+        .close {
+            font-size: 26px; 
+            position: absolute;
+            top: 0;
+            right: 10px;
+            color: inherit;
+        }
+
+
+      </style>
+</head>
+
+<body>
+
+<!-- ======================header started====================== -->
+    
+    <header>
+        <div class="my-nav">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="nav-items">
+                        <div class="menu-toggle"></div>
+                        <div class="logo">
+                            <h1 style="color: #545454;"><span style="color: #ff2c9c;">Site</span> Wage</h1>
+                        </div>
+                        <div class="menu-items">
+                            <div class="menu">
+                                <ul>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================**Banner Section**================ -->
+    
+    <div id="error-messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">  &times;</span>
+            </button>
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+    </div>
+
+    <section class="banner">
+        <div class="banner-wrapper-main" style="background: #ce5495;height: 60rem;"></div>
+        
+        <div class="container" style="height: 825px;">
+            <div class="row">
+                <div class="slider-wrapper">
+                   
+                    <div class="box-01">
+                        <div class="content" style="padding-top: 150px;">
+                           
+                        <h6 class="text-primary fw-bolder"><span style="color: #ff2c9c;">ADMIN SECTION</span></h6>
+                        <h1 class="fs-11 fw-bolder text-dark" style="text-transform: none; font-size: 4rem; color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;">Be The Change BE The Future !</h1>
+                        <p class="fs-6 text-dark">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                     
+                        </div>
+                    </div>
+                    <div class="box-01" style="display: flex;justify-content: center;align-items: center;">
+                                
+                            <div class="login-section position-absolute top-50 start-50 translate-middle" style="background-color: rgba(255, 255, 255, 0.8); width: 340px; height: 360px; padding: 20px;margin-left: 70px;margin-top: 50px;">
+                                <h2 style="color: black;font-size: x-large;">Login</h2>
+                                <form action="" method="POST" >
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="username" class="form-label" style="color: black;font-size: large;"  >User ID</label>
+                                        <input type="text" class="form-control" id="username" name="admn_id">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label" style="color: black;font-size: large;" >Password</label>
+                                        <input type="password" class="form-control" id="password" name="admn_password">
+                                    </div>
+                                    <button id="btnlogin" type="submit" class="btn btn-primary" style="margin-top: 15px;">Login</button>
+                                </form>
+                            </div>
+                            <img src="{% static 'images/tp1.png' %}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        
+        setTimeout(function() {
+            var errorMessageDiv = document.getElementById("error-messages");
+            if (errorMessageDiv) {
+                errorMessageDiv.remove();
+            }
+        }, 3000); 
+    </script>
+</body>
+<script src="{% static 'js/jquery2-3.2.1.min.js' %}"></script>
+<script src="{% static 'js/popper2.min.js' %}"></script>
+<script src="{% static 'js/bootstrap2.min.js' %}"></script>
+<script src="{% static 'js/script2.js' %}"></script>
+</html>

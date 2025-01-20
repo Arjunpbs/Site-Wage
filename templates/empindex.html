@@ -1,0 +1,152 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Site_wage</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="{% static 'css/bootstrap3.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap3-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'css/templatemo3-topic-listing.css' %}" rel="stylesheet">
+
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .main {
+            width: 100%;
+            height: 100%;
+        }
+
+        .site-header {
+            width: 100%;
+            min-height: 100vh; /* Use min-height to ensure header takes up at least 100% of the viewport height */
+            background-color: #333; /* Change this to desired background color */
+        }
+
+        .topics-detail-block {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Add padding for better spacing */
+        }
+
+        .login-form-container {
+            background-color: transparent; /* Match the site-header background color */
+            border: 3px solid #44d3c1;
+            border-radius: 10px;
+            padding: 20px;
+            width: 100%; /* Ensure full width */
+        }
+    </style>
+</head>
+
+<body id="top">
+    <main>
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand">
+                    <i class="bi-back"></i>
+                    <span>SiteWage</span>
+                </a>
+
+                <div class="d-lg-none ms-auto me-4">
+                    <a class="navbar-icon bi-person smoothscroll"></a>
+                </div>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-lg-5 me-lg-auto"></ul>
+                    <div class="d-none d-lg-block">
+                        <a class="navbar-icon bi-person smoothscroll" id="login-button"></a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="site-header d-flex flex-column justify-content-center align-items-center">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            <div class="container" style="padding-top: 65px;">
+                <div class="row justify-content-center align-items-center">
+                    <div class="col-lg-5 col-12 mb-5">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item active" aria-current="page">Employee Section</li>
+                            </ol>
+                        </nav>
+                        <h2 class="text-white">Belive In Technology <br> Make The Change</h2>
+                        <div class="d-flex align-items-center mt-5">
+                            <a class="btn custom-btn custom-border-btn smoothscroll me-4" id="letsstart">Lets Start</a>
+                            <a class="custom-icon bi-bookmark smoothscroll"></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 col-12">
+                        <div class="topics-detail-block bg-white shadow-lg" id="topics-detail-block">
+                            <img src="{% static 'images/undraw_Finance_re_gnv2.png' %}" class="topics-detail-block-image img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- JAVASCRIPT FILES -->
+        <script src="{% static 'js/jquery3.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+        <script src="{% static 'js/jquery3.sticky.js' %}"></script>
+        <script>
+            // JavaScript code to handle the click event on login button
+            document.getElementById('login-button').addEventListener('click', function() {
+                toggleLoginForm();
+            });
+            document.getElementById('letsstart').addEventListener('click', function() {
+                toggleLoginForm();
+            });
+
+            document.querySelector('.bi-person').addEventListener('click', function() {
+                toggleLoginForm();
+            });
+
+            function toggleLoginForm() {
+                // Replace the image with login form
+                document.getElementById('topics-detail-block').innerHTML = `
+                    <div class="login-form-container">
+                        <form action="" method="POST" id="login-form" style="width: 100%; padding-top: 20px;">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label" style="color: white; font-size: large; font-weight: 700;">User ID</label>
+                                <input type="text" class="form-control" id="username" name="username">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label" style="color: white; font-size: large; font-weight: 700;">Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
+                            </div>
+                            <button id="btnlogin" type="submit" class="btn btn-warning" style="color: white; background-color: #12857e; font-weight: 700;">Login</button>
+                        </form>
+                    </div>
+                `;
+            }
+        </script>
+    </main>
+</body>
+</html>

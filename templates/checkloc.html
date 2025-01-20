@@ -1,0 +1,204 @@
+{% load static %}
+{% load tz %}
+<!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Site Wage</title>
+        <link rel="shortcut icon" href="{% static 'images/fav.png' %}" type="image/x-icon">
+        <link rel="shortcut icon" href="{% static 'images/fav.jpg' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="{% static 'plugins/testimonial/css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/testimonial/css/owl.theme.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+        <style>
+        .login-section {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 450px; /* Increase width */
+    height: 450px; /* Increase height */
+    padding: 40px; /* Increase padding */
+    border: 3px solid transparent;
+    border-radius: 10px;
+    animation: borderEffect 3s infinite;
+    overflow: auto;
+}
+.login-section::-webkit-scrollbar {
+    display: none;
+}
+
+/* Firefox */
+.login-section {
+    scrollbar-width: none;
+}
+
+/* Define the animation */
+@keyframes borderEffect {
+    0% { border-color: rgb(255, 0, 0); }
+    33% { border-color: rgb(0, 255, 0); }
+    66% { border-color: rgb(0, 0, 255); }
+    100% { border-color: rgb(255, 0, 0); }
+}
+
+/* Style for headings and labels */
+h2, label {
+    color: black;
+    font-size: large;
+}
+#logout
+        {
+            font-size: large;
+            color: #ff2c9c;
+        }
+#logouta:hover
+        {
+            color: #ff2c9c;
+        }
+        table {
+            border: 3px solid black;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: lightgrey;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+#viewloc:hover{
+    background-color: #ff2c9c;
+}
+#map-container {
+            position: relative;
+            display: none; /* Hidden by default */
+            height: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        #close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        </style>
+         <script>
+           
+        </script>
+    </head>
+    <body>
+        <header>
+            <div id="menu-jk" class="nav-part bg-white shadow">
+                <div class="container-xl p-0">
+                    <div class="row  bg-white navcol p-3">
+                        <div class="col-lg-4">
+                            <h1><span style="color: #ff2c9c;">Site</span> Wage</h1>
+                             <a  data-bs-toggle="collapse" data-bs-target="#menu" class="float-end d-lg-none ps-3"><i class="bi pt-1 fs-1 cp bi-list"></i></a>
+                        </div>
+                        <div id="menu" class="col-lg-8 text pe-0 d-none d-lg-block">
+                            <ul class="fw-bold float-end nacul fs-8 text-uppercase">
+                                <li id="logout" class="float-start act p-3 px-4"><a href="{% url 'gomainmenu' %}" id="logouta">GOto Menu</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!--  ************************* Banner Start Here ************************** --> 
+
+        <div id="home" class="banner big-padding bg-white container-fluid" style="height: 738px;" >
+            <div class="container-xl p-0 max-1200" >
+                <div id="map-container">
+                    
+                    <button id="close-btn" style="font-size: 20px; cursor: pointer;z-index: 999;" onclick="closeMap()">&#10006;</button>
+    
+                    <div id="map"></div>
+                </div>
+                <h2>Latest Location  Details</h2>
+                <p>NOTE: The Latest Location is Captured Every 3hr After Employee Submits Details For Attendance Until Employee Loguts   </p>
+                
+    
+                        {% if latest_location %}
+                                <table>
+                                    <tr>
+                                        <th>Emp ID</th>
+                                        <th>Emp Name</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Latitude</th>
+                                        <th>Longitude</th>
+                                        <th>View Location</th>
+                                    </tr>
+                                    <tr>
+                                        <td>{{ latest_location.employee.emp_id }}</td>
+                                        <td>{{ latest_location.employee.emp_name }}</td>
+                                        <td>{{ latest_location.saved_datetime|date:"Y-m-d" }}</td>
+                                        <td>{{ latest_location.saved_datetime|time:"H:i:s" }}</td>
+                                        <td>{{ latest_location.latitude }}</td>
+                                         <td>{{ latest_location.longitude }}</td>
+                                         <td>
+                                            <button id="viewloc" onclick="viewLocation('{{ latest_location.latitude }}', '{{ latest_location.longitude }}')">View Location</button>
+                                        </td>
+                                    </tr>
+                                    </table>
+                        {% endif %}
+                
+                    </tbody>
+                    </table>
+                
+                <script>
+                   function viewLocation(lat, lng) {
+            console.log('Latitude:', lat, 'Longitude:', lng); // Debugging log
+            var mapContainer = document.getElementById('map-container');
+            mapContainer.style.display = 'block';
+            
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: parseFloat(lat), lng: parseFloat(lng)},
+                zoom: 15
+            });
+            
+            var marker = new google.maps.Marker({
+                position: {lat: parseFloat(lat), lng: parseFloat(lng)},
+                map: map
+            });
+        }
+
+        function closeMap() {
+            document.getElementById('map-container').style.display = 'none';
+        }
+                </script>
+                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB67iSP3H14c008PGNj1Af3USo5ZLtjh-Y"></script>
+               
+                
+   
+
+
+        </div>
+        
+      
+    </body>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'plugins/scroll-fixed/jquery-scrolltofixed-min.js' %}"></script>
+    <script src="{% static 'plugins/testimonial/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/typewrite.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</html>

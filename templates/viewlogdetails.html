@@ -1,0 +1,171 @@
+{% load static %}
+{% load tz %}
+<!doctype html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Site Wage</title>
+        <link rel="shortcut icon" href="{% static 'images/fav.png' %}" type="image/x-icon">
+        <link rel="shortcut icon" href="{% static 'images/fav.jpg' %}">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="{% static 'plugins/testimonial/css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'plugins/testimonial/css/owl.theme.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+        <style>
+        .login-section {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 450px; 
+    height: 450px; 
+    padding: 40px; 
+    border: 3px solid transparent;
+    border-radius: 10px;
+    animation: borderEffect 3s infinite;
+    overflow: auto;
+}
+.login-section::-webkit-scrollbar {
+    display: none;
+}
+
+
+.login-section {
+    scrollbar-width: none;
+}
+
+
+@keyframes borderEffect {
+    0% { border-color: rgb(255, 0, 0); }
+    33% { border-color: rgb(0, 255, 0); }
+    66% { border-color: rgb(0, 0, 255); }
+    100% { border-color: rgb(255, 0, 0); }
+}
+
+
+h2, label {
+    color: black;
+    font-size: large;
+}
+#logout
+        {
+            font-size: large;
+            color: #ff2c9c;
+        }
+#logouta:hover
+        {
+            color: #ff2c9c;
+        }
+        table {
+            border: 3px solid black;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: lightgrey;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        </style>
+         <script>
+           function viewImage(url) {
+            const imageWindow = window.open("", "_blank");
+            imageWindow.document.write(`<img src="${url}" alt="Attendance Image">`);
+        }
+        </script>
+    </head>
+    <body>
+        <header>
+            <div id="menu-jk" class="nav-part bg-white shadow">
+                <div class="container-xl p-0">
+                    <div class="row  bg-white navcol p-3">
+                        <div class="col-lg-4">
+                            <h1><span style="color: #ff2c9c;">Site</span> Wage</h1>
+                             <a  data-bs-toggle="collapse" data-bs-target="#menu" class="float-end d-lg-none ps-3"><i class="bi pt-1 fs-1 cp bi-list"></i></a>
+                        </div>
+                        <div id="menu" class="col-lg-8 text pe-0 d-none d-lg-block">
+                            <ul class="fw-bold float-end nacul fs-8 text-uppercase">
+                                <li id="logout" class="float-start act p-3 px-4"><a href="{% url 'gomainmenu' %}" id="logouta">GOto Menu</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!--  ************************* Banner Start Here ************************** --> 
+
+        <div id="home" class="banner big-padding bg-white container-fluid" style="height: 738px;" >
+            <div class="container-xl p-0 max-1200" >
+                <h1>Employee Data</h1>
+            {% for date, logs in logs_by_date %}
+                   <h2 style="text-align: center;">{{ date }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Employee ID</th>
+                            <th>Employee Name</th>
+                            <th>Login Date</th>
+                            <th>Login Time</th>
+                            <th>Login Image</th>
+                            <th>Login Latitude</th>
+                            <th>Login Longitude</th>
+                            <th>Logout Date</th>
+                            <th>Logout Time</th>
+                            <th>Logout Latitude</th>
+                            <th>Logout Longitude</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr>
+                            <td>{{ log.submission.employee.emp_id }}</td>
+                            <td>{{ log.submission.employee.emp_name }}</td>
+                            <td>{{ log.submission.saved_datetime|localtime|date:"Y-m-d" }}</td>
+                            {% if log.submission.saved_datetime %}
+                                <td>{{ log.submission.saved_datetime|localtime|date:"h:i A" }}</td>
+                            {% else %}
+                                <td>No datetime available</td>
+                            {% endif %}
+                            <td>
+                                <button onclick="viewImage('{{ log.submission.image.url }}')" style="border-color: #ff2c9c;width: 75px;">View Image</button>
+                            </td>
+                            <td>{{ log.submission.latitude }}</td>
+                            <td>{{ log.submission.longitude }}</td>
+                            {% if log.logout %}
+                                <td>{{ log.logout.saved_datetime.date }}</td>
+                                {% if log.logout.saved_datetime %}
+                                    <td>{{ log.logout.saved_datetime|localtime|date:"h:i A" }}</td>
+                                {% else %}
+                                    <td>No datetime available</td>
+                                {% endif %}
+                                <td>{{ log.logout.latitude }}</td>
+                                <td>{{ log.logout.longitude }}</td>
+                            {% else %}
+                                <td colspan="4">No logout data</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                 </tbody>
+             </table>
+           {% endfor %}
+    </div>
+</div>
+      
+    </body>
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'plugins/scroll-fixed/jquery-scrolltofixed-min.js' %}"></script>
+    <script src="{% static 'plugins/testimonial/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/typewrite.min.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
+
+</html>
